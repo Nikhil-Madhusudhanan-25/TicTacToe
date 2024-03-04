@@ -10,10 +10,12 @@ const gameboard=(function(){
         }
     return{returnBoard,displayBoard};
 })();
-const players={player1:{name:'player 1', symbol:'X'},
-    player2:{name:'player 2', symbol:'O'}
-}
+
 const gameFlow=(function(){
+    const players={
+        player1:{name:'player 1', symbol:'X'},
+        player2:{name:'player 2', symbol:'O'}
+    }
     let currentActivePlayer=players.player1;
     let board=gameboard.returnBoard();
     let row=0, column=0;
