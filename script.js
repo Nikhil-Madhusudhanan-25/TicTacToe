@@ -85,7 +85,7 @@ const gameFlow=(function(){
         let winArray=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
         for(element of winArray){
             [a,b,c]=element;
-            if(flattenedBoard[a]+flattenedBoard[b]+flattenedBoard[c]==3){
+            if(flattenedBoard[a]+flattenedBoard[b]+flattenedBoard[c]==3||flattenedBoard[a]+flattenedBoard[b]+flattenedBoard[c]==-3){
                 displayController.displayMessage(currentActivePlayer.name+" wins!");
                 return 1;
             }
@@ -111,6 +111,7 @@ const gameFlow=(function(){
         row=0, 
         column=0,
         gameOverVar=0;
+        displayController.turnDisplay(currentActivePlayer.name);
     }
     return{getMove,restartGame,getNames};
 })();
@@ -119,7 +120,8 @@ const displayController=(function(){
         document.getElementById("game-start-message").style.display="none";
         gameFlow.getNames();
         document.querySelectorAll(".tile").forEach((tile)=>{
-            tile.style.display="block";
+            tile.style.display="grid";
+            tile.style.alignContent="center";
         })
     });
     let tilesList=document.querySelectorAll(".tile");
