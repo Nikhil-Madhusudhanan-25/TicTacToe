@@ -8,7 +8,12 @@ const gameboard=(function(){
         console.log(board[1]);
         console.log(board[2]);
         }
-    return{returnBoard,displayBoard};
+    function boardReset(){
+         for(row of board){
+            row.fill('');
+        } 
+    }
+    return{returnBoard,displayBoard,boardReset};
 })();
 
 const gameFlow=(function(){
@@ -22,7 +27,7 @@ const gameFlow=(function(){
         column=0
         firstTime=1,
         rowColumnArray=[[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]],
-        gameOver=0;
+        gameOverVar=0;
     /* function getMove(){
         while(firstTime){
             gameboard.displayBoard();
@@ -34,7 +39,7 @@ const gameFlow=(function(){
         mark();
     } */
     function getMove(tileId){
-        if(!gameOver){
+        if(!gameOverVar){
             displayController.turnDisplay(currentActivePlayer.name);
             [row, column]=rowColumnArray[tileId];
             mark(row, column,tileId);
@@ -71,8 +76,12 @@ const gameFlow=(function(){
             switchPlayer();
             getMove();
         }
-        else if(result==1){
+        /* else if(result==1){
             gameOver=1;
+            restartGame();
+        } */
+        else if(result==1){
+            gameOver();
         }
     }
     function switchPlayer(){
@@ -118,10 +127,24 @@ const gameFlow=(function(){
     /* function test(){
     } 
     return{test,getMove};*/
-    return{getMove};
+    function gameOver(){
+        gameOverVar=1;
+        displayController.restartGame();
+    }
+    function restartGame(){
+        gameboard.boardReset();
+        currentActivePlayer=players.player1;
+        board=gameboard.returnBoard();
+        row=0, 
+        column=0
+        firstTime=1,
+        gameOverVar=0;
+    }
+    return{getMove,restartGame};
 })();
 const displayController=(function(){
     document.getElementById("game-start-button").addEventListener("click",()=>{
+        document.getElementById("game-start-message").style.display="none";
         turnDisplay();
         document.querySelectorAll(".tile").forEach((tile)=>{
             tile.style.display="block";
@@ -133,11 +156,25 @@ const displayController=(function(){
                 gameFlow.getMove(tile.id);
             });
         })      
-    function displayMessage(message){
+    function displayMessage(message=""){
         document.getElementById("message").textContent=message;
     }
     function turnDisplay(playerName="player 1"){
         document.getElementById("turn-display").textContent=playerName+"'s turn";
+    }
+    function restartGame(){
+        let restartButton=document.createElement("button");
+        restartButton.textContent="Click here to play again!";
+        restartButton.style.display="block";
+        document.getElementById("restart-game").appendChild(restartButton);
+        restartButton.addEventListener("click",()=>{
+            document.querySelectorAll(".tile").forEach((tile)=>{
+                tile.textContent="";
+            });
+            restartButton.style.display="none";
+            displayMessage();
+            gameFlow.restartGame();
+        });
     }
     /* function test(){
         tilesList.forEach((tile)=>{
@@ -145,5 +182,5 @@ const displayController=(function(){
         })
     } 
     return{test}; */
-    return{displayMessage,turnDisplay};
+    return{displayMessage,turnDisplay,restartGame};
 })();
