@@ -33,6 +33,7 @@ const gameFlow=(function(){
         mark();
     } */
     function getMove(tileId){
+        displayController.turnDisplay(currentActivePlayer.name);
         [row, column]=rowColumnArray[tileId];
         mark(row, column,tileId);
     }
@@ -51,13 +52,14 @@ const gameFlow=(function(){
         getMove();}
     } */
     function mark(row, column,tileId){
+        displayController.displayMessage("");
         let boardRow=board[row];
         if(boardRow[column]==''){
             boardRow[column]=currentActivePlayer.symbol;
             document.getElementById(tileId).textContent=currentActivePlayer.symbol;
         }
         else{
-            console.log("This tile is already marked, try again");
+            displayController.displayMessage("This tile is already marked, try again");
             getMove();
         }
         gameboard.displayBoard();
@@ -90,7 +92,8 @@ const gameFlow=(function(){
         for(element of winArray){
             [a,b,c]=element;
             if(flattenedBoard[a]+flattenedBoard[b]+flattenedBoard[c]==3){
-                console.log(currentActivePlayer.name+" wins!");
+                /* console.log(currentActivePlayer.name+" wins!"); */
+                displayController.displayMessage(currentActivePlayer.name+" wins!");
                 return 1;
             }
         }
@@ -100,7 +103,8 @@ const gameFlow=(function(){
         }
         if(count==0)
         {
-            console.log("Game drawn!");
+            /* console.log("Game drawn!"); */
+            displayController.displayMessage("Game Drawn!");
             return 1;
         }
     }
@@ -111,6 +115,7 @@ const gameFlow=(function(){
 })();
 const displayController=(function(){
     document.getElementById("game-start-button").addEventListener("click",()=>{
+        turnDisplay();
         document.querySelectorAll(".tile").forEach((tile)=>{
             tile.style.display="block";
         })
@@ -122,11 +127,17 @@ const displayController=(function(){
         });
         
     })
+    function displayMessage(message){
+        document.getElementById("message").textContent=message;
+    }
+    function turnDisplay(playerName="player 1"){
+        document.getElementById("turn-display").textContent=playerName+"'s turn";
+    }
     /* function test(){
         tilesList.forEach((tile)=>{
             console.log(tile.id);
         })
     } 
     return{test}; */
-    
+    return{displayMessage,turnDisplay};
 })();
