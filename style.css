@@ -1,0 +1,18 @@
+.game-board{
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3,1fr);
+    height: 40vh;
+    width: 40vw;
+}
+.row{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+}
+.tile{
+    display: none;
+    padding: 15px 15px;
+    background-color: bisque;
+    border:1px solid black;
+}

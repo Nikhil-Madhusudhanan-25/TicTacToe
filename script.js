@@ -88,4 +88,24 @@ const gameFlow=(function(){
     return{test,getMove};*/
     return{getMove};
 })();
-const displayController=(function(){})();
+const displayController=(function(){
+    document.getElementById("game-start-button").addEventListener("click",()=>{
+        document.querySelectorAll(".tile").forEach((tile)=>{
+            tile.style.display="block";
+        })
+    });
+    let tilesList=document.querySelectorAll(".tile");
+    tilesList.forEach((tile)=>{
+        tile.addEventListener("click",()=>{
+            gameFlow.getMove(tile.id);
+        });
+        
+    })
+    /* function test(){
+        tilesList.forEach((tile)=>{
+            console.log(tile.id);
+        })
+    } 
+    return{test}; */
+    
+})();
