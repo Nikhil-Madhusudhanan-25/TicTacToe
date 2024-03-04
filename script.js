@@ -3,17 +3,12 @@ const gameboard=(function(){
     function returnBoard(){
         return board;
     }
-    function displayBoard(){
-        console.log(board[0]);
-        console.log(board[1]);
-        console.log(board[2]);
-        }
     function boardReset(){
          for(row of board){
             row.fill('');
         } 
     }
-    return{returnBoard,displayBoard,boardReset};
+    return{returnBoard,boardReset};
 })();
 
 const gameFlow=(function(){
@@ -28,16 +23,6 @@ const gameFlow=(function(){
         firstTime=1,
         rowColumnArray=[[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]],
         gameOverVar=0;
-    /* function getMove(){
-        while(firstTime){
-            gameboard.displayBoard();
-            firstTime=0;
-        }
-        console.log(`${currentActivePlayer.name}'s move - `);
-        row=prompt("Enter row to mark");
-        column=prompt("Enter column to mark");
-        mark();
-    } */
     function getNames(){
         while(firstTime){
             console.log("while active");
@@ -57,20 +42,6 @@ const gameFlow=(function(){
             mark(row, column,tileId);
         }
     }
-    /* function mark(){
-        let boardRow=board[row-1];
-        if(boardRow[column-1]=='')
-            boardRow[column-1]=currentActivePlayer.symbol;
-        else{
-            console.log("This tile is already marked, try again");
-            getMove();
-        }
-        gameboard.displayBoard();
-        let result=checkWin();
-        if(result!=1)
-        {switchPlayer();
-        getMove();}
-    } */
     function mark(row, column,tileId){
         displayController.displayMessage("");
         let boardRow=board[row];
@@ -82,16 +53,11 @@ const gameFlow=(function(){
             displayController.displayMessage("This tile is already marked, try again");
             getMove();
         }
-        gameboard.displayBoard();
         let result=checkWin();
         if(result!=1){
             switchPlayer();
             getMove();
         }
-        /* else if(result==1){
-            gameOver=1;
-            restartGame();
-        } */
         else if(result==1){
             gameOver();
         }
@@ -120,7 +86,6 @@ const gameFlow=(function(){
         for(element of winArray){
             [a,b,c]=element;
             if(flattenedBoard[a]+flattenedBoard[b]+flattenedBoard[c]==3){
-                /* console.log(currentActivePlayer.name+" wins!"); */
                 displayController.displayMessage(currentActivePlayer.name+" wins!");
                 return 1;
             }
@@ -131,14 +96,10 @@ const gameFlow=(function(){
         }
         if(count==0)
         {
-            /* console.log("Game drawn!"); */
             displayController.displayMessage("Game Drawn!");
             return 1;
         }
     }
-    /* function test(){
-    } 
-    return{test,getMove};*/
     function gameOver(){
         gameOverVar=1;
         displayController.restartGame();
@@ -149,7 +110,6 @@ const gameFlow=(function(){
         board=gameboard.returnBoard();
         row=0, 
         column=0,
-        /* firstTime=1, */
         gameOverVar=0;
     }
     return{getMove,restartGame,getNames};
@@ -158,7 +118,6 @@ const displayController=(function(){
     document.getElementById("game-start-button").addEventListener("click",()=>{
         document.getElementById("game-start-message").style.display="none";
         gameFlow.getNames();
-        /* turnDisplay(); */
         document.querySelectorAll(".tile").forEach((tile)=>{
             tile.style.display="block";
         })
@@ -189,11 +148,5 @@ const displayController=(function(){
             gameFlow.restartGame();
         });
     }
-    /* function test(){
-        tilesList.forEach((tile)=>{
-            console.log(tile.id);
-        })
-    } 
-    return{test}; */
     return{displayMessage,turnDisplay,restartGame};
 })();
