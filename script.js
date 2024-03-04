@@ -38,6 +38,18 @@ const gameFlow=(function(){
         column=prompt("Enter column to mark");
         mark();
     } */
+    function getNames(){
+        while(firstTime){
+            console.log("while active");
+            firstTime=0;
+            let setName=prompt("Do you want to set custom names for player 1 and player 2? Enter Yes/No");
+            if(setName=="Yes"||setName=="yes"){
+                players.player1.name=prompt("Enter player 1 name");
+                players.player2.name=prompt("Enter player 2 name");
+            }
+            displayController.turnDisplay(currentActivePlayer.name);
+        }
+    }
     function getMove(tileId){
         if(!gameOverVar){
             displayController.turnDisplay(currentActivePlayer.name);
@@ -136,16 +148,17 @@ const gameFlow=(function(){
         currentActivePlayer=players.player1;
         board=gameboard.returnBoard();
         row=0, 
-        column=0
-        firstTime=1,
+        column=0,
+        /* firstTime=1, */
         gameOverVar=0;
     }
-    return{getMove,restartGame};
+    return{getMove,restartGame,getNames};
 })();
 const displayController=(function(){
     document.getElementById("game-start-button").addEventListener("click",()=>{
         document.getElementById("game-start-message").style.display="none";
-        turnDisplay();
+        gameFlow.getNames();
+        /* turnDisplay(); */
         document.querySelectorAll(".tile").forEach((tile)=>{
             tile.style.display="block";
         })
