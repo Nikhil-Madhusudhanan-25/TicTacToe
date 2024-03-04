@@ -21,7 +21,8 @@ const gameFlow=(function(){
     let row=0, 
         column=0
         firstTime=1,
-        rowColumnArray=[[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]];
+        rowColumnArray=[[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]],
+        gameOver=0;
     /* function getMove(){
         while(firstTime){
             gameboard.displayBoard();
@@ -33,9 +34,11 @@ const gameFlow=(function(){
         mark();
     } */
     function getMove(tileId){
-        displayController.turnDisplay(currentActivePlayer.name);
-        [row, column]=rowColumnArray[tileId];
-        mark(row, column,tileId);
+        if(!gameOver){
+            displayController.turnDisplay(currentActivePlayer.name);
+            [row, column]=rowColumnArray[tileId];
+            mark(row, column,tileId);
+        }
     }
     /* function mark(){
         let boardRow=board[row-1];
@@ -64,9 +67,13 @@ const gameFlow=(function(){
         }
         gameboard.displayBoard();
         let result=checkWin();
-        if(result!=1)
-        {switchPlayer();
-        getMove();}
+        if(result!=1){
+            switchPlayer();
+            getMove();
+        }
+        else if(result==1){
+            gameOver=1;
+        }
     }
     function switchPlayer(){
         if(currentActivePlayer==players.player1)
@@ -121,12 +128,11 @@ const displayController=(function(){
         })
     });
     let tilesList=document.querySelectorAll(".tile");
-    tilesList.forEach((tile)=>{
-        tile.addEventListener("click",()=>{
-            gameFlow.getMove(tile.id);
-        });
-        
-    })
+        tilesList.forEach((tile)=>{
+            tile.addEventListener("click",()=>{
+                gameFlow.getMove(tile.id);
+            });
+        })      
     function displayMessage(message){
         document.getElementById("message").textContent=message;
     }
