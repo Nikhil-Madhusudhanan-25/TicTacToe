@@ -20,8 +20,9 @@ const gameFlow=(function(){
     let board=gameboard.returnBoard();
     let row=0, 
         column=0
-        firstTime=1;
-    function getMove(){
+        firstTime=1,
+        rowColumnArray=[[0,0],[0,1],[0,2],[1,0],[1,1],[1,2],[2,0],[2,1],[2,2]];
+    /* function getMove(){
         while(firstTime){
             gameboard.displayBoard();
             firstTime=0;
@@ -30,11 +31,31 @@ const gameFlow=(function(){
         row=prompt("Enter row to mark");
         column=prompt("Enter column to mark");
         mark();
+    } */
+    function getMove(tileId){
+        [row, column]=rowColumnArray[tileId];
+        mark(row, column,tileId);
     }
-    function mark(){
+    /* function mark(){
         let boardRow=board[row-1];
         if(boardRow[column-1]=='')
             boardRow[column-1]=currentActivePlayer.symbol;
+        else{
+            console.log("This tile is already marked, try again");
+            getMove();
+        }
+        gameboard.displayBoard();
+        let result=checkWin();
+        if(result!=1)
+        {switchPlayer();
+        getMove();}
+    } */
+    function mark(row, column,tileId){
+        let boardRow=board[row];
+        if(boardRow[column]==''){
+            boardRow[column]=currentActivePlayer.symbol;
+            document.getElementById(tileId).textContent=currentActivePlayer.symbol;
+        }
         else{
             console.log("This tile is already marked, try again");
             getMove();
