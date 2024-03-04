@@ -18,9 +18,14 @@ const gameFlow=(function(){
     }
     let currentActivePlayer=players.player1;
     let board=gameboard.returnBoard();
-    let row=0, column=0;
+    let row=0, 
+        column=0
+        firstTime=1;
     function getMove(){
-        gameboard.displayBoard();
+        while(firstTime){
+            gameboard.displayBoard();
+            firstTime=0;
+        }
         console.log(`${currentActivePlayer.name}'s move - `);
         row=prompt("Enter row to mark");
         column=prompt("Enter column to mark");
@@ -56,7 +61,10 @@ const gameFlow=(function(){
             else
                 return 0;
         });
-        let a,b,c;
+        let a,
+            b,
+            c,
+            count=0;
         let winArray=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
         for(element of winArray){
             [a,b,c]=element;
@@ -64,6 +72,15 @@ const gameFlow=(function(){
                 console.log(currentActivePlayer.name+" wins!");
                 return 1;
             }
+        }
+        for(element of flattenedBoard){
+            if(element==0)
+                count++;
+        }
+        if(count==0)
+        {
+            console.log("Game drawn!");
+            return 1;
         }
     }
     /* function test(){
